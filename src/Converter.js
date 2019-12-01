@@ -25,7 +25,7 @@ class Converter extends Component {
         this.setState({ error: '', loading: true });
 
         const ddkToUsd = fetch('https://api.coinmarketcap.com/v1/ticker/ddkoin/').then(result => result.json());
-        const usdToIdr = fetch('https://api.exchangeratesapi.io/latest?symbols=IDR&base=USD').then(result => result.json());
+        const usdToIdr = fetch('https://api.exchangerate-api.com/v4/latest/USD').then(result => result.json());
 
         let dkk = 0;
         let rate = 0;
@@ -44,9 +44,19 @@ class Converter extends Component {
                 if (usdToIdrResult) {
                     rate = usdToIdrResult.rates.IDR;
                     date = usdToIdrResult.date;
+                    if (usdToIdrResult.time_last_updated) {
+                        var lastUpdate = new Date(usdToIdrResult.time_last_updated * 1000);
+                        var year = lastUpdate.getFullYear();
+                        var month = "0" + (lastUpdate.getMonth() + 1);
+                        var dates = "0" + lastUpdate.getDate();
+                        var hours = "0" + lastUpdate.getHours();
+                        var minutes = "0" + lastUpdate.getMinutes();
+                        var seconds = "0" + lastUpdate.getSeconds();
+                        date = year + '-' + month.substr(-2) + '-' + dates.substr(-2) + ' ' + hours.substr(-2) + ':' + minutes.substr(-2);
+                    }
                 }
 
-                console.log(dkk, rate);
+                console.log(dkk, rate, date);
 
                 this.setState({
                     ddkToUsd: currency.setNumeric(Number(dkk).toFixed(2), '$ '),
@@ -67,7 +77,7 @@ class Converter extends Component {
 
         this.setState({
             price: currency.setCurrencyValue(text),
-            priceToDdk: currency.setNumeric(result.toFixed(2))
+            priceToDdk: currency.setNumeric(result.toFixed(4))
         });
     }
 
@@ -86,7 +96,7 @@ class Converter extends Component {
                 <Header />
                 <View style={{ marginRight: 10, marginLeft: 10 }}>
                     <Image source={require('../assets/banner.png')}
-                        style={{ width: '100%', height: 200, resizeMode: 'contain' }} />
+                        style={{ width: '100%', height: 180, resizeMode: 'contain' }} />
                 </View>
                 <KeyboardAvoidingView behavior="padding" enabled>
                     <Card>
