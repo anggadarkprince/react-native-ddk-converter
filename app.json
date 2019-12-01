@@ -15,8 +15,9 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000"
+      "backgroundColor": "#000000"
     },
+    "githubUrl": "https://github.com/anggadarkprince/react-native-ddk-converter",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
