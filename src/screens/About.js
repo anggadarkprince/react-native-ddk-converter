@@ -4,7 +4,7 @@ import { View, Text, Image } from 'react-native';
 const About = (props) => {
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/logo.png')} 
+            <Image source={require('../../assets/logo.png')}
                 style={{ marginLeft: 'auto', marginRight: 'auto', width: 150, resizeMode: 'contain' }} />
             <Text style={{color: '#fff'}}>Created by <Text style={{ fontWeight: 'bold' }}>Katara Swalayan</Text></Text>
             <Text style={{ color: '#fff' }}>&copy; 2019 All rights reserved</Text>
