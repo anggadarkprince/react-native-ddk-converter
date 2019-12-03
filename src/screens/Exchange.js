@@ -43,7 +43,7 @@ class Exchange extends Component {
         const usdToIdr = currency.getCurrencyValue(this.state.usdToIdr);
 
         const sell = currency.getCurrencyValue(text) * (ddkToUsd * 1.3) * usdToIdr;
-        const buy = currency.getCurrencyValue(text) * (ddkToUsd * 0.7) * usdToIdr;
+        const buy = currency.getCurrencyValue(text) * (ddkToUsd * 0.9) * usdToIdr;
 
         this.setState({
             amount: currency.setCurrencyValue(text),

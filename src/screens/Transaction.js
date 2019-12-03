@@ -28,22 +28,22 @@ class Transaction extends Component {
                 <Card>
                     <CardSection>
                         <Button onPress={() => this.props.navigation.navigate('Transaction1')}>
-                            Transaction 1
+                            Katara 1
                         </Button>
                     </CardSection>
                     <CardSection>
                         <Button onPress={() => this.props.navigation.navigate('Transaction2')}>
-                            Transaction 2
+                            Katara 2
                         </Button>
                     </CardSection>
                     <CardSection>
                         <Button onPress={() => this.props.navigation.navigate('Transaction3')}>
-                            Transaction 3
+                            Katara 3
                         </Button>
                     </CardSection>
                     <CardSection>
                         <Button onPress={() => this.props.navigation.navigate('Transaction4')}>
-                            Transaction 4
+                            Katara 4
                         </Button>
                     </CardSection>
                 </Card>
