@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { View, KeyboardAvoidingView, Image } from 'react-native';
-import { Button, Input, Spinner } from './components/interaction';
-import Card from './components/card/Card';
-import CardSection from './components/card/CardSection';
-import currency from './helpers/currency';
-import Header from './Header';
+import React, {Component} from 'react';
+import {View, KeyboardAvoidingView, Image} from 'react-native';
+import {Button, Input, Spinner} from '../components/interaction';
+import Card from '../components/card/Card';
+import CardSection from '../components/card/CardSection';
+import Header from '../components/Header';
+import currency from '../helpers/currency';
+import ddkAPI from "../helpers/ddkAPI";
 
 class Converter extends Component {
     state = {
@@ -22,51 +23,17 @@ class Converter extends Component {
     }
 
     fetchingData() {
-        this.setState({ error: '', loading: true });
+        this.setState({error: '', loading: true});
 
-        const ddkToUsd = fetch('https://api.coinmarketcap.com/v1/ticker/ddkoin/').then(result => result.json());
-        const usdToIdr = fetch('https://api.exchangerate-api.com/v4/latest/USD').then(result => result.json());
-
-        let dkk = 0;
-        let rate = 0;
-        let date = '';
-        Promise.all([ddkToUsd, usdToIdr])
+        ddkAPI()
             .then(result => {
-                this.setState({ loading: false });
+                console.log({loading: false, ...result});
 
-                const dkkToUsdResult = result[0];
-                const usdToIdrResult = result[1];
-
-                if (dkkToUsdResult) {
-                    dkk = dkkToUsdResult[0].price_usd;
-                }
-
-                if (usdToIdrResult) {
-                    rate = usdToIdrResult.rates.IDR;
-                    date = usdToIdrResult.date;
-                    if (usdToIdrResult.time_last_updated) {
-                        var lastUpdate = new Date(usdToIdrResult.time_last_updated * 1000);
-                        var year = lastUpdate.getFullYear();
-                        var month = "0" + (lastUpdate.getMonth() + 1);
-                        var dates = "0" + lastUpdate.getDate();
-                        var hours = "0" + lastUpdate.getHours();
-                        var minutes = "0" + lastUpdate.getMinutes();
-                        var seconds = "0" + lastUpdate.getSeconds();
-                        date = year + '-' + month.substr(-2) + '-' + dates.substr(-2) + ' ' + hours.substr(-2) + ':' + minutes.substr(-2);
-                    }
-                }
-
-                console.log(dkk, rate, date);
-
-                this.setState({
-                    ddkToUsd: currency.setNumeric(Number(dkk).toFixed(2), '$ '),
-                    usdToIdr: currency.setNumeric(Number(rate).toFixed(2), 'Rp. '),
-                    usdToIdrDate: date,
-                });
+                this.setState({loading: false, ...result});
                 this.onInputPrice(this.state.price);
             })
             .catch(error => {
-                this.setState({ error: 'Something went wrong when fetching currency data', loading: false });
+                this.setState({error: 'Something went wrong when fetching currency data', loading: false});
             });
     }
 
@@ -77,7 +44,7 @@ class Converter extends Component {
 
         this.setState({
             price: currency.setCurrencyValue(text),
-            priceToDdk: currency.setNumeric(result.toFixed(4))
+            priceToDdk: 'Rp. ' + currency.setNumeric(result.toFixed(4))
         });
     }
 
@@ -92,11 +59,11 @@ class Converter extends Component {
 
     render() {
         return (
-            <View style={{ backgroundColor: '#000', flex: 1 }}>
-                <Header />
-                <View style={{ marginRight: 10, marginLeft: 10 }}>
-                    <Image source={require('../assets/banner.png')}
-                        style={{ width: '100%', height: 180, resizeMode: 'contain' }} />
+            <View style={{backgroundColor: '#000', flex: 1}}>
+                <Header/>
+                <View style={{marginRight: 10, marginLeft: 10}}>
+                    <Image source={require('../../assets/banner.png')}
+                           style={{width: '100%', height: 180, resizeMode: 'contain'}}/>
                 </View>
                 <KeyboardAvoidingView behavior="padding" enabled>
                     <Card>
@@ -152,7 +119,7 @@ class Converter extends Component {
                         </CardSection>
                     </Card>
                 </KeyboardAvoidingView>
-                {this.state.loading ? <Spinner /> : null}
+                {this.state.loading ? <Spinner/> : null}
             </View>
         );
     }
